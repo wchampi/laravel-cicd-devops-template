@@ -1,0 +1,26 @@
+version: '2'
+services:
+    apache:
+        build: .
+        restart: on-failure
+        ports:
+            - "3000:80"
+        volumes:
+          - ./:/var/www
+          - /var/www/vendor
+    mongodb:
+      image: mongo:3.2
+      ports:
+        - "27018:27017"
+      environment:
+        - MONGO_INITDB_DATABASE=tallermecanico
+        - MONGO_INITDB_ROOT_USERNAME=root
+        - MONGO_INITDB_ROOT_PASSWORD=root
+      volumes:
+        - ./mongo-volume:/data/db
+networks:
+    default:
+        ipam:
+            driver: default
+            config:
+                - subnet: 10.20.11.1/22
